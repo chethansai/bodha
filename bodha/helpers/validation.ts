@@ -1,6 +1,7 @@
 import { VALIDATION } from '@/constants/app';
 import type { CompleteProfileInput } from '@/types/profile';
 import type { LoginFormValues, SignupFormValues } from '@/types/auth';
+import type { CreateJobInput } from '@/types/job';
 
 export function validateLogin(values: LoginFormValues): string | null {
   if (!values.email.trim() || !values.password) {
@@ -41,6 +42,27 @@ export function validateProfile(values: CompleteProfileInput): string | null {
     values.yearsOfExperience > VALIDATION.yearsOfExperienceMax
   ) {
     return 'Years of experience is invalid.';
+  }
+
+  return null;
+}
+
+export function validateJob(values: CreateJobInput): string | null {
+  if (
+    !values.title.trim() ||
+    !values.companyName.trim() ||
+    !values.location.trim() ||
+    !values.experienceRequired.trim() ||
+    !values.description.trim() ||
+    !values.employmentType.trim() ||
+    !values.salaryRange.trim() ||
+    !values.slug.trim()
+  ) {
+    return 'All job fields are required.';
+  }
+
+  if (values.skills.length === 0 || values.skills.some((skill) => !skill.trim())) {
+    return 'Add at least one valid skill.';
   }
 
   return null;

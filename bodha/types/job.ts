@@ -38,3 +38,15 @@ export interface SeedJobInput {
   slug: string;
   seedKey: string;
 }
+
+export interface CreateJobInput {
+  title: string;
+  companyName: string;
+  location: string;
+  experienceRequired: string;
+  description: string;
+  employmentType: string;
+  salaryRange: string;
+  skills: string[];
+  slug: string;
+}

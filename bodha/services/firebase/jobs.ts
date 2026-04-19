@@ -1,6 +1,7 @@
 import {
   addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -12,7 +13,7 @@ import {
 import { DEFAULT_JOBS } from '@/constants/app';
 import { toTimestampMillis } from '@/helpers/formatters';
 import { getFirebaseDb } from '@/services/firebase/app';
-import type { JobCardModel, JobDocument } from '@/types/job';
+import type { CreateJobInput, JobCardModel, JobDocument } from '@/types/job';
 
 const JOBS_COLLECTION = 'jobs';
 
@@ -69,6 +70,21 @@ export async function listAllJobsForAdmin(): Promise<JobDocument[]> {
   return snapshots.docs
     .map((item) => ({ id: item.id, ...(item.data() as Omit<JobDocument, 'id'>) }))
     .sort((left, right) => toTimestampMillis(right.postedAt) - toTimestampMillis(left.postedAt));
+}
+
+export async function createJob(input: CreateJobInput): Promise<void> {
+  await addDoc(collection(getFirebaseDb(), JOBS_COLLECTION), {
+    ...input,
+    skills: input.skills.map((skill) => skill.trim()).filter(Boolean),
+    isActive: true,
+    seedKey: '',
+    postedAt: serverTimestamp(),
+    updatedAt: serverTimestamp(),
+  });
+}
+
+export async function deleteJob(jobId: string): Promise<void> {
+  await deleteDoc(doc(getFirebaseDb(), JOBS_COLLECTION, jobId));
 }
 
 export function mapJobDocumentToCard(job: JobDocument): JobCardModel {

@@ -47,6 +47,7 @@ export default function AdminDashboardScreen() {
       ) : null}
       <Link href="/(app)/admin/users">View all users</Link>
       <Link href="/(app)/admin/applications">View all applications</Link>
+      <Link href="/(app)/admin/jobs">View jobs management</Link>
     </Screen>
   );
 }
