@@ -1,395 +1,111 @@
-import { Redirect, router } from 'expo-router';
-import { ScrollView, View } from 'react-native';
+import { Link, Redirect, router } from 'expo-router';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { PrimaryButton } from '@/components/common/primary-button';
+import { Screen } from '@/components/common/screen';
+import { ThemedText } from '@/components/themed-text';
 import { ROUTES } from '@/constants/app';
 import { useAuthGate } from '@/providers/auth-provider';
-import { Screen } from '@/components/common/screen';
-import { BrandHeader } from '@/components/common/brand-header';
-import { ThemedText } from '@/components/themed-text';
-import { PrimaryButton } from '@/components/common/primary-button';
-import { StatusCard } from '@/components/common/status-card';
-import { useThemeColor } from '@/hooks/use-theme-color';
+
+const highlights = [
+  {
+    title: 'Browse relevant roles',
+    description:
+      'Explore openings for students and early-career candidates with clear role details, skill expectations, and application information.',
+  },
+  {
+    title: 'Apply with one profile',
+    description:
+      'Set up your profile once and use it across applications without re-entering the same information every time.',
+  },
+  {
+    title: 'Stay organised',
+    description:
+      'Keep your applications in one place so you can follow your job search with less confusion and less manual tracking.',
+  },
+];
+
+const flow = [
+  'Create your account and complete your profile once.',
+  'Explore available roles by company, location, and fit.',
+  'Apply directly and keep track of your submissions from your dashboard.',
+];
+
+const sections = [
+  {
+    title: 'How My Campus works',
+    body:
+      'My Campus brings job discovery and job applications into one place, so you can focus on finding the right opportunity instead of managing scattered links and repeated forms.',
+  },
+  {
+    title: 'Who it is for',
+    body:
+      'It is built for students, fresh graduates, and early-career professionals who want a simple way to explore roles and manage applications with less friction.',
+  },
+  {
+    title: 'What you can expect',
+    body:
+      'Clear job descriptions, reusable profile information, application tracking, and a straightforward experience designed to keep the process practical and easy to follow.',
+  },
+];
+
+const privacyItems = [
+  'Your account information is used to operate the platform, support sign-in, and enable job applications.',
+  'Profile details you provide are used only where needed for platform functionality and the application process.',
+  'You should share only accurate information that you are comfortable using for professional and recruitment-related purposes.',
+  'Reasonable technical and administrative safeguards are used to protect stored data, but no online service should be presented as completely risk-free.',
+];
+
+const legalItems = [
+  'Platform branding, interface design, and original content remain protected unless stated otherwise.',
+  'Copyright and all rights reserved notices are included to make ownership and permitted use clear.',
+  'Nothing on this platform should be interpreted as a guarantee of placement, employer response, or employment outcome.',
+  'Third-party company names, logos, and job details should be displayed only where there is a valid basis to do so.',
+];
+
+const disclaimers = [
+  'Using the platform does not guarantee interviews, callbacks, offers, or employment.',
+  'Job information may change, expire, or be withdrawn without notice.',
+  'Candidates remain responsible for reviewing the suitability, legitimacy, and current status of an opportunity before acting on it.',
+  'Applicants should not be asked to make payments in exchange for application consideration through this platform.',
+];
+
+const footerLinks = [
+  { label: 'Privacy notice', href: '/privacy-notice' },
+  { label: 'Terms of use', href: '/terms-of-use' },
+  { label: 'Data handling', href: '/data-handling' },
+  { label: 'Contact and support', href: '/contact-and-support' },
+] as const;
+
+function SectionCard({ title, body }: { title: string; body: string }) {
+  return (
+    <View style={styles.card}>
+      <ThemedText type="subtitle" style={styles.cardTitle}>
+        {title}
+      </ThemedText>
+      <ThemedText style={styles.cardBody}>{body}</ThemedText>
+    </View>
+  );
+}
+
+function BulletList({ items, textStyle }: { items: string[]; textStyle?: object }) {
+  return (
+    <View style={styles.list}>
+      {items.map((item) => (
+        <View key={item} style={styles.listItem}>
+          <View style={styles.bullet} />
+          <ThemedText style={[styles.listText, textStyle]}>{item}</ThemedText>
+        </View>
+      ))}
+    </View>
+  );
+}
 
 export default function IndexScreen() {
   const { status } = useAuthGate();
-  const backgroundColor = useThemeColor({}, 'background');
-  const textColor = useThemeColor({}, 'text');
 
-  // Landing page for logged out users
-  if (status === 'loggedOut') {
-    return (
-      <Screen>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {/* Hero Section */}
-          <View style={{ paddingVertical: 40, paddingHorizontal: 20, alignItems: 'center' }}>
-            <ThemedText
-              type="title"
-              style={{
-                fontSize: 32,
-                fontWeight: 'bold',
-                marginBottom: 12,
-                textAlign: 'center',
-              }}
-            >
-              Welcome to My Campus
-            </ThemedText>
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 16,
-                marginBottom: 24,
-                textAlign: 'center',
-                lineHeight: 24,
-              }}
-            >
-              Discover amazing job opportunities and connect with top companies in your field.
-            </ThemedText>
-          </View>
-
-          {/* How It Works Section */}
-          <View style={{ paddingHorizontal: 20, marginBottom: 40 }}>
-            <ThemedText
-              type="title"
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-                marginBottom: 20,
-                textAlign: 'center',
-              }}
-            >
-              How It Works
-            </ThemedText>
-
-            <StatusCard title="1. Create Account" description="Sign up and complete your profile with your skills and experience." />
-            <StatusCard
-              title="2. Browse Jobs"
-              description="Explore job listings from companies actively hiring in your domain."
-              style={{ marginTop: 12 }}
-            />
-            <StatusCard
-              title="3. Apply Now"
-              description="Submit your applications directly through the portal and track their status."
-              style={{ marginTop: 12 }}
-            />
-            <StatusCard
-              title="4. Connect & Succeed"
-              description="Get feedback, interview updates, and land your dream opportunity."
-              style={{ marginTop: 12 }}
-            />
-          </View>
-
-          {/* Key Features Section */}
-          <View style={{ paddingHorizontal: 20, marginBottom: 40 }}>
-            <ThemedText
-              type="title"
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-                marginBottom: 20,
-                textAlign: 'center',
-              }}
-            >
-              Why Choose My Campus?
-            </ThemedText>
-
-            <StatusCard title="🎯 Curated Opportunities" description="Vetted job listings tailored to your skills and career goals." />
-            <StatusCard
-              title="📱 Easy to Use"
-              description="Intuitive interface designed for seamless job hunting and application management."
-              style={{ marginTop: 12 }}
-            />
-            <StatusCard
-              title="🔒 Secure & Private"
-              description="Your data is protected with industry-leading security standards."
-              style={{ marginTop: 12 }}
-            />
-            <StatusCard
-              title="⚡ Real-time Updates"
-              description="Get instant notifications about application status, new jobs, and company updates."
-              style={{ marginTop: 12 }}
-            />
-          </View>
-
-          {/* Privacy & Compliance Section */}
-          <View style={{ paddingHorizontal: 20, marginBottom: 40 }}>
-            <ThemedText
-              type="title"
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-                marginBottom: 20,
-                textAlign: 'center',
-              }}
-            >
-              Privacy & Compliance
-            </ThemedText>
-
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginBottom: 16,
-                lineHeight: 22,
-              }}
-            >
-              <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>
-                Data Protection:{'\n'}
-              </ThemedText>
-              We are committed to protecting your personal information. All user data is encrypted and stored securely. We comply with GDPR, CCPA, and other international data protection regulations.
-            </ThemedText>
-
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginBottom: 16,
-                lineHeight: 22,
-              }}
-            >
-              <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>
-                Email Verification:{'\n'}
-              </ThemedText>
-              All users must verify their email addresses before accessing the platform. This ensures a secure and trustworthy community of job seekers and employers.
-            </ThemedText>
-
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginBottom: 16,
-                lineHeight: 22,
-              }}
-            >
-              <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>
-                Profile Information:{'\n'}
-              </ThemedText>
-              Your profile information including skills, experience, and resume data is optional but helps companies find the right match. You control what information is visible to employers.
-            </ThemedText>
-          </View>
-
-          {/* Disclaimers Section */}
-          <View style={{ paddingHorizontal: 20, marginBottom: 40 }}>
-            <ThemedText
-              type="title"
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-                marginBottom: 20,
-                textAlign: 'center',
-              }}
-            >
-              Important Disclaimers
-            </ThemedText>
-
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginBottom: 16,
-                lineHeight: 22,
-              }}
-            >
-              <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>
-                Accuracy of Information:{'\n'}
-              </ThemedText>
-              While we strive to ensure all job listings are accurate, My Campus does not guarantee the accuracy, completeness, or authenticity of any job posting or employer information. Users are responsible for verifying job details independently.
-            </ThemedText>
-
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginBottom: 16,
-                lineHeight: 22,
-              }}
-            >
-              <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>
-                No Employment Guarantee:{'\n'}
-              </ThemedText>
-              My Campus is a platform connecting job seekers with employers. We do not guarantee employment or job offers. Success depends on your qualifications and the hiring decisions of employers.
-            </ThemedText>
-
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginBottom: 16,
-                lineHeight: 22,
-              }}
-            >
-              <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>
-                Scam Prevention:{'\n'}
-              </ThemedText>
-              Be cautious of job postings requesting upfront payments or personal information. My Campus does not monitor transactions between users and employers. Report suspicious activities immediately.
-            </ThemedText>
-
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginBottom: 16,
-                lineHeight: 22,
-              }}
-            >
-              <ThemedText type="subtitle" style={{ fontWeight: 'bold' }}>
-                Third-party Links:{'\n'}
-              </ThemedText>
-              We are not responsible for third-party websites or services linked from our platform. Please review their privacy and terms policies independently.
-            </ThemedText>
-          </View>
-
-          {/* FAQ Section */}
-          <View style={{ paddingHorizontal: 20, marginBottom: 40 }}>
-            <ThemedText
-              type="title"
-              style={{
-                fontSize: 24,
-                fontWeight: 'bold',
-                marginBottom: 20,
-                textAlign: 'center',
-              }}
-            >
-              Frequently Asked Questions
-            </ThemedText>
-
-            <StatusCard
-              title="Is My Campus free to use?"
-              description="Yes! My Campus is free for job seekers. We're committed to making job hunting accessible to everyone."
-            />
-            <StatusCard
-              title="How do I apply for jobs?"
-              description="Create an account, complete your profile, and click 'Apply' on any job listing. You can track all your applications in your dashboard."
-              style={{ marginTop: 12 }}
-            />
-            <StatusCard
-              title="Can I edit my profile?"
-              description="Yes, you can update your profile information, skills, and experience anytime from your account settings."
-              style={{ marginTop: 12 }}
-            />
-            <StatusCard
-              title="How do I report a suspicious job listing?"
-              description="Use the report button on the job listing page. Our team reviews all reports and takes appropriate action."
-              style={{ marginTop: 12 }}
-            />
-            <StatusCard
-              title="When will I hear back about my application?"
-              description="Timeline depends on the employer. Most companies review applications within 2-4 weeks. You'll receive notifications for updates."
-              style={{ marginTop: 12 }}
-            />
-          </View>
-
-          {/* CTA Section */}
-          <View style={{ paddingHorizontal: 20, marginVertical: 40, alignItems: 'center' }}>
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 18,
-                fontWeight: 'bold',
-                marginBottom: 24,
-                textAlign: 'center',
-              }}
-            >
-              Ready to find your next opportunity?
-            </ThemedText>
-            <PrimaryButton label="Log In" onPress={() => router.push(ROUTES.login)} />
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 14,
-                marginTop: 16,
-                textAlign: 'center',
-              }}
-            >
-              New here?{' '}
-              <ThemedText
-                type="subtitle"
-                style={{
-                  fontSize: 14,
-                  color: '#007AFF',
-                  fontWeight: 'bold',
-                }}
-                onPress={() => router.push(ROUTES.signup)}
-              >
-                Create an account
-              </ThemedText>
-            </ThemedText>
-          </View>
-
-          {/* Footer Section */}
-          <View
-            style={{
-              paddingHorizontal: 20,
-              paddingVertical: 24,
-              borderTopWidth: 1,
-              borderTopColor: '#e5e5e5',
-              marginTop: 20,
-            }}
-          >
-            <ThemedText
-              type="subtitle"
-              style={{
-                fontSize: 12,
-                textAlign: 'center',
-                marginBottom: 12,
-              }}
-            >
-              © 2024-2026 My Campus. All rights reserved.
-            </ThemedText>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                gap: 16,
-              }}
-            >
-              <ThemedText
-                type="subtitle"
-                style={{
-                  fontSize: 12,
-                  color: '#007AFF',
-                }}
-              >
-                Privacy Policy
-              </ThemedText>
-              <ThemedText
-                type="subtitle"
-                style={{
-                  fontSize: 12,
-                }}
-              >
-                •
-              </ThemedText>
-              <ThemedText
-                type="subtitle"
-                style={{
-                  fontSize: 12,
-                  color: '#007AFF',
-                }}
-              >
-                Terms of Service
-              </ThemedText>
-              <ThemedText
-                type="subtitle"
-                style={{
-                  fontSize: 12,
-                }}
-              >
-                •
-              </ThemedText>
-              <ThemedText
-                type="subtitle"
-                style={{
-                  fontSize: 12,
-                  color: '#007AFF',
-                }}
-              >
-                Contact Us
-              </ThemedText>
-            </View>
-          </View>
-        </ScrollView>
-      </Screen>
-    );
+  if (status === 'ready') {
+    return <Redirect href={ROUTES.jobs} />;
   }
 
   if (status === 'emailUnverified') {
@@ -400,9 +116,391 @@ export default function IndexScreen() {
     return <Redirect href={ROUTES.completeProfile} />;
   }
 
-  if (status === 'ready') {
-    return <Redirect href={ROUTES.jobs} />;
-  }
+  return (
+    <Screen>
+      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
+        <View style={styles.hero}>
+          <View style={styles.heroBadge}>
+            <ThemedText style={styles.heroBadgeText}>MY CAMPUS</ThemedText>
+          </View>
 
-  return null;
+          <ThemedText type="title" style={styles.heroTitle}>
+            Find the right opportunity and apply from one place.
+          </ThemedText>
+
+          <ThemedText style={styles.heroDescription}>
+            Discover campus and early-career roles, build your profile once, and keep track of every application through a single, straightforward workflow.
+          </ThemedText>
+
+          <View style={styles.heroActions}>
+            <PrimaryButton label="Login" onPress={() => router.push(ROUTES.login)} />
+            <Pressable accessibilityRole="button" onPress={() => router.push(ROUTES.signup)} style={styles.secondaryButton}>
+              <ThemedText style={styles.secondaryButtonText}>Create account</ThemedText>
+            </Pressable>
+          </View>
+
+          <View style={styles.metricsRow}>
+            <View style={styles.metricCard}>
+              <ThemedText style={styles.metricLabel}>Find</ThemedText>
+              <ThemedText style={styles.metricValue}>Open roles</ThemedText>
+            </View>
+            <View style={styles.metricCard}>
+              <ThemedText style={styles.metricLabel}>Apply</ThemedText>
+              <ThemedText style={styles.metricValue}>With one profile</ThemedText>
+            </View>
+            <View style={styles.metricCard}>
+              <ThemedText style={styles.metricLabel}>Track</ThemedText>
+              <ThemedText style={styles.metricValue}>Your progress</ThemedText>
+            </View>
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <ThemedText type="subtitle" style={styles.sectionHeading}>
+            A simpler way to manage your job search
+          </ThemedText>
+          <ThemedText style={styles.sectionIntro}>
+            Everything on My Campus is designed to make job discovery and applications easier to understand, easier to manage, and easier to revisit later.
+          </ThemedText>
+          {sections.map((section) => (
+            <SectionCard key={section.title} title={section.title} body={section.body} />
+          ))}
+        </View>
+
+        <View style={styles.accentPanel}>
+          <View style={styles.accentHeaderRow}>
+            <ThemedText type="subtitle" style={styles.accentTitle}>
+              Everything you need to get started
+            </ThemedText>
+            <ThemedText style={styles.accentEyebrow}>CLEAR INFORMATION. NO NOISE.</ThemedText>
+          </View>
+          <BulletList
+            items={[
+              'Browse available job opportunities in one place.',
+              'Create your account and maintain one reusable profile.',
+              'Apply without repeating the same details across every opportunity.',
+              'Track submitted applications from a single dashboard.',
+              'Review privacy, usage, and disclaimer information before you begin.',
+              'Use clear entry points to log in, sign up, and continue your search.',
+            ]}
+          />
+        </View>
+
+        <View style={styles.twoColumnSection}>
+          <View style={styles.columnCard}>
+            <ThemedText type="subtitle" style={styles.columnTitle}>
+              Get started in three steps
+            </ThemedText>
+            <BulletList items={flow} />
+          </View>
+
+          <View style={styles.columnCardDark}>
+            <ThemedText type="subtitle" style={styles.columnTitleDark}>
+              Built for a clearer process
+            </ThemedText>
+            <BulletList
+              textStyle={styles.listTextLight}
+              items={[
+                'Straightforward role information instead of vague listings.',
+                'A reusable profile instead of repeated application forms.',
+                'Visible privacy and disclaimer information from the first page.',
+                'A clear starting point whether you are new or returning.',
+              ]}
+            />
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <ThemedText type="subtitle" style={styles.sectionHeading}>
+            Why candidates use My Campus
+          </ThemedText>
+          <View style={styles.grid}>
+            {highlights.map((item) => (
+              <View key={item.title} style={styles.featureCard}>
+                <ThemedText type="subtitle" style={styles.featureTitle}>
+                  {item.title}
+                </ThemedText>
+                <ThemedText style={styles.featureBody}>{item.description}</ThemedText>
+              </View>
+            ))}
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <ThemedText type="subtitle" style={styles.sectionHeading}>
+            How your information is handled
+          </ThemedText>
+          <ThemedText style={styles.sectionIntro}>
+            We keep privacy language direct and practical so you understand what information is used, why it is used, and what limits still apply.
+          </ThemedText>
+          <View style={styles.legalCard}>
+            <BulletList items={privacyItems} />
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <ThemedText type="subtitle" style={styles.sectionHeading}>
+            Legal and ownership
+          </ThemedText>
+          <View style={styles.legalCard}>
+            <BulletList items={legalItems} />
+          </View>
+        </View>
+
+        <View style={styles.section}>
+          <ThemedText type="subtitle" style={styles.sectionHeading}>
+            What to know before applying
+          </ThemedText>
+          <View style={styles.warningCard}>
+            <BulletList items={disclaimers} />
+          </View>
+        </View>
+
+        <View style={styles.footer}>
+          <ThemedText style={styles.footerBrand}>My Campus</ThemedText>
+          <View style={styles.footerLinksRow}>
+            {footerLinks.map((item) => (
+              <Link key={item.href} href={item.href} asChild>
+                <Pressable accessibilityRole="link" style={styles.footerLinkPressable}>
+                  <ThemedText style={styles.footerLinkText}>{item.label}</ThemedText>
+                </Pressable>
+              </Link>
+            ))}
+          </View>
+          <ThemedText style={styles.footerCopy}>
+            Copyright 2026 My Campus. All rights reserved.
+          </ThemedText>
+        </View>
+      </ScrollView>
+    </Screen>
+  );
 }
+
+const styles = StyleSheet.create({
+  content: {
+    gap: 24,
+    paddingBottom: 48,
+  },
+  hero: {
+    backgroundColor: '#12324a',
+    borderRadius: 28,
+    paddingHorizontal: 22,
+    paddingVertical: 24,
+    gap: 18,
+    borderWidth: 1,
+    borderColor: '#2d5877',
+  },
+  heroBadge: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#f4c36b',
+    borderRadius: 999,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+  },
+  heroBadgeText: {
+    color: '#12324a',
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+  },
+  heroTitle: {
+    color: '#fffaf2',
+    fontSize: 36,
+    lineHeight: 42,
+    fontWeight: '800',
+  },
+  heroDescription: {
+    color: '#d6e4ef',
+    fontSize: 16,
+    lineHeight: 25,
+  },
+  heroActions: {
+    gap: 12,
+  },
+  secondaryButton: {
+    minHeight: 48,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: '#7ba1bc',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 16,
+    backgroundColor: 'rgba(255,255,255,0.06)',
+  },
+  secondaryButtonText: {
+    color: '#f8f0df',
+    fontSize: 16,
+    fontWeight: '700',
+  },
+  metricsRow: {
+    gap: 12,
+  },
+  metricCard: {
+    borderRadius: 18,
+    padding: 16,
+    backgroundColor: '#f8f0df',
+    gap: 6,
+  },
+  metricLabel: {
+    color: '#8a5b11',
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 1,
+    textTransform: 'uppercase',
+  },
+  metricValue: {
+    color: '#12283b',
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  section: {
+    gap: 14,
+  },
+  sectionHeading: {
+    fontSize: 26,
+    lineHeight: 30,
+    color: '#12283b',
+  },
+  sectionIntro: {
+    color: '#465a6d',
+  },
+  card: {
+    backgroundColor: '#fffaf2',
+    borderRadius: 20,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: '#eadfcf',
+    gap: 8,
+  },
+  cardTitle: {
+    color: '#12283b',
+    fontSize: 20,
+  },
+  cardBody: {
+    color: '#4b5d73',
+  },
+  accentPanel: {
+    backgroundColor: '#d97706',
+    borderRadius: 24,
+    padding: 20,
+    gap: 16,
+  },
+  accentHeaderRow: {
+    gap: 8,
+  },
+  accentTitle: {
+    color: '#fff7ed',
+    fontSize: 24,
+    lineHeight: 30,
+  },
+  accentEyebrow: {
+    color: '#fff1cf',
+    fontSize: 12,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+  },
+  list: {
+    gap: 12,
+  },
+  listItem: {
+    flexDirection: 'row',
+    gap: 12,
+    alignItems: 'flex-start',
+  },
+  bullet: {
+    width: 8,
+    height: 8,
+    borderRadius: 999,
+    marginTop: 8,
+    backgroundColor: '#12324a',
+  },
+  listText: {
+    flex: 1,
+    color: '#24384a',
+  },
+  listTextLight: {
+    color: '#f8f0df',
+  },
+  twoColumnSection: {
+    gap: 16,
+  },
+  columnCard: {
+    backgroundColor: '#fffaf2',
+    borderRadius: 22,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: '#eadfcf',
+    gap: 12,
+  },
+  columnCardDark: {
+    backgroundColor: '#1f435d',
+    borderRadius: 22,
+    padding: 18,
+    gap: 12,
+  },
+  columnTitle: {
+    color: '#12283b',
+  },
+  columnTitleDark: {
+    color: '#fffaf2',
+  },
+  grid: {
+    gap: 14,
+  },
+  featureCard: {
+    backgroundColor: '#f1e3cb',
+    borderRadius: 20,
+    padding: 18,
+    gap: 8,
+  },
+  featureTitle: {
+    color: '#7b4d0c',
+    fontSize: 20,
+  },
+  featureBody: {
+    color: '#473526',
+  },
+  legalCard: {
+    backgroundColor: '#fffaf2',
+    borderRadius: 22,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: '#eadfcf',
+    gap: 16,
+  },
+  footerLinksRow: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  footerLinkPressable: {
+    paddingVertical: 2,
+  },
+  footerLinkText: {
+    color: '#6b5a43',
+    fontSize: 11,
+    fontWeight: '600',
+  },
+  warningCard: {
+    backgroundColor: '#fff0df',
+    borderRadius: 22,
+    padding: 18,
+    borderWidth: 1,
+    borderColor: '#f2c28b',
+  },
+  footer: {
+    gap: 8,
+    borderTopWidth: 1,
+    borderTopColor: '#d8c9b2',
+    paddingTop: 20,
+  },
+  footerBrand: {
+    fontSize: 20,
+    fontWeight: '800',
+    color: '#12283b',
+  },
+  footerCopy: {
+    color: '#3f5367',
+    fontWeight: '700',
+  },
+});
