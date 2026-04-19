@@ -67,10 +67,11 @@ export default function SignupScreen() {
         onSubmit={handleSubmit}
         password={password}
         submitLabel="Create account"
+        subtitle="Create your My Campus profile to apply faster and unlock a curated job dashboard."
         title="Create your account"
       />
       <ThemedText>
-        Already registered? <Link href={ROUTES.login}>Log in</Link>
+        Already on My Campus? <Link href={ROUTES.login}>Log in</Link>
       </ThemedText>
     </Screen>
   );

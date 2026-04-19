@@ -1,6 +1,7 @@
 import { Redirect } from 'expo-router';
 import { useState } from 'react';
 
+import { BrandHeader } from '@/components/common/brand-header';
 import { PrimaryButton } from '@/components/common/primary-button';
 import { Screen } from '@/components/common/screen';
 import { StatusCard } from '@/components/common/status-card';
@@ -47,6 +48,10 @@ export default function EmailConfirmationScreen() {
 
   return (
     <Screen>
+      <BrandHeader
+        subtitle="Verify your email to activate your My Campus account and continue to your hiring dashboard."
+        title="Confirm your email"
+      />
       <StatusCard
         loading={loading}
         message={message}
@@ -56,7 +61,7 @@ export default function EmailConfirmationScreen() {
       <PrimaryButton disabled={loading} label="Resend verification email" onPress={handleResend} />
       <PrimaryButton disabled={loading} label="Sign out" onPress={() => void signOutUser()} />
       <ThemedText>
-        If you verified outside the app, use refresh to pull the latest account state.
+        If you verified outside My Campus, use refresh to pull the latest account state.
       </ThemedText>
     </Screen>
   );

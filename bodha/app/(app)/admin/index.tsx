@@ -2,6 +2,7 @@ import { Link } from 'expo-router';
 import { View, StyleSheet } from 'react-native';
 
 import { AdminStatCard } from '@/components/admin/admin-stat-card';
+import { BrandHeader } from '@/components/common/brand-header';
 import { EmptyState } from '@/components/common/empty-state';
 import { InlineLinkButton } from '@/components/common/inline-link-button';
 import { Screen } from '@/components/common/screen';
@@ -23,6 +24,11 @@ export default function AdminDashboardScreen() {
 
   return (
     <Screen>
+      <BrandHeader
+        eyebrow="MY CAMPUS ADMIN"
+        subtitle="Monitor candidate growth, applications, and job demand across the My Campus hiring funnel."
+        title="Admin dashboard"
+      />
       <StatusCard
         loading={loading}
         message={error ?? 'Review registered users and all submitted job applications.'}

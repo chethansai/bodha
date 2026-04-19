@@ -1,3 +1,4 @@
+import { BrandHeader } from '@/components/common/brand-header';
 import { EmptyState } from '@/components/common/empty-state';
 import { InlineLinkButton } from '@/components/common/inline-link-button';
 import { Screen } from '@/components/common/screen';
@@ -24,6 +25,10 @@ export default function ApplicationsScreen() {
 
   return (
     <Screen>
+      <BrandHeader
+        subtitle="Track every My Campus application in one place, from first click to final shortlist."
+        title="My applications"
+      />
       <StatusCard
         loading={loading}
         message={error ?? 'Track every job you have applied to.'}

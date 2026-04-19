@@ -58,10 +58,11 @@ export default function LoginScreen() {
         onSubmit={handleSubmit}
         password={password}
         submitLabel="Login"
+        subtitle="My Campus helps you discover verified roles, manage applications, and stay interview-ready."
         title="Welcome back"
       />
       <ThemedText>
-        New here? <Link href={ROUTES.signup}>Create an account</Link>
+        New to My Campus? <Link href={ROUTES.signup}>Create an account</Link>
       </ThemedText>
     </Screen>
   );

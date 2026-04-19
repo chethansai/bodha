@@ -1,6 +1,7 @@
 import { Redirect, router } from 'expo-router';
 import { useState } from 'react';
 
+import { BrandHeader } from '@/components/common/brand-header';
 import { Screen } from '@/components/common/screen';
 import { ProfileForm } from '@/components/profile/profile-form';
 import { ROUTES } from '@/constants/app';
@@ -64,6 +65,10 @@ export default function CompleteProfileScreen() {
 
   return (
     <Screen>
+      <BrandHeader
+        subtitle="Complete your My Campus profile once so every application carries the right candidate snapshot."
+        title="Finish your profile"
+      />
       <ProfileForm
         disabled={submitting}
         education={education}
