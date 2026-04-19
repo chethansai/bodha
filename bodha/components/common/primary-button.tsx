@@ -20,7 +20,7 @@ export function PrimaryButton({ label, onPress, disabled = false }: PrimaryButto
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#0b63ce',
+    backgroundColor: '#0f6cbd',
     borderRadius: 14,
     minHeight: 48,
     alignItems: 'center',

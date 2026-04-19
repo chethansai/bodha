@@ -40,8 +40,8 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   input: {
-    backgroundColor: '#fff',
-    borderColor: '#d0d7e2',
+    backgroundColor: '#fffdf8',
+    borderColor: '#d9c8b3',
     borderRadius: 14,
     borderWidth: 1,
     minHeight: 48,

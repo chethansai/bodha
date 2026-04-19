@@ -1,16 +1,16 @@
 import {
   addDoc,
   collection,
+  doc,
+  getDoc,
   getDocs,
-  orderBy,
   query,
   serverTimestamp,
   where,
-  doc,
-  getDoc,
 } from 'firebase/firestore';
 
 import { DEFAULT_JOBS } from '@/constants/app';
+import { toTimestampMillis } from '@/helpers/formatters';
 import { getFirebaseDb } from '@/services/firebase/app';
 import type { JobCardModel, JobDocument } from '@/types/job';
 
@@ -45,14 +45,12 @@ export async function seedDefaultJobsIfNeeded(): Promise<{ insertedCount: number
 }
 
 export async function listActiveJobs(): Promise<JobDocument[]> {
-  const jobsQuery = query(
-    collection(getFirebaseDb(), JOBS_COLLECTION),
-    where('isActive', '==', true),
-    orderBy('postedAt', 'desc')
-  );
+  const jobsQuery = query(collection(getFirebaseDb(), JOBS_COLLECTION), where('isActive', '==', true));
   const snapshots = await getDocs(jobsQuery);
 
-  return snapshots.docs.map((item) => ({ id: item.id, ...(item.data() as Omit<JobDocument, 'id'>) }));
+  return snapshots.docs
+    .map((item) => ({ id: item.id, ...(item.data() as Omit<JobDocument, 'id'>) }))
+    .sort((left, right) => toTimestampMillis(right.postedAt) - toTimestampMillis(left.postedAt));
 }
 
 export async function getJobById(jobId: string): Promise<JobDocument | null> {
@@ -66,10 +64,11 @@ export async function getJobById(jobId: string): Promise<JobDocument | null> {
 }
 
 export async function listAllJobsForAdmin(): Promise<JobDocument[]> {
-  const jobsQuery = query(collection(getFirebaseDb(), JOBS_COLLECTION), orderBy('postedAt', 'desc'));
-  const snapshots = await getDocs(jobsQuery);
+  const snapshots = await getDocs(collection(getFirebaseDb(), JOBS_COLLECTION));
 
-  return snapshots.docs.map((item) => ({ id: item.id, ...(item.data() as Omit<JobDocument, 'id'>) }));
+  return snapshots.docs
+    .map((item) => ({ id: item.id, ...(item.data() as Omit<JobDocument, 'id'>) }))
+    .sort((left, right) => toTimestampMillis(right.postedAt) - toTimestampMillis(left.postedAt));
 }
 
 export function mapJobDocumentToCard(job: JobDocument): JobCardModel {

@@ -15,3 +15,19 @@ export function formatDate(value: FirestoreTimestampLike): string {
 
   return 'N/A';
 }
+
+export function toTimestampMillis(value: FirestoreTimestampLike): number {
+  if (!value) {
+    return 0;
+  }
+
+  if (value instanceof Date) {
+    return value.getTime();
+  }
+
+  if ('toDate' in value) {
+    return value.toDate().getTime();
+  }
+
+  return 0;
+}

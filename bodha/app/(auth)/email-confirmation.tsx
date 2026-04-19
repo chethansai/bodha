@@ -1,4 +1,4 @@
-import { Redirect } from 'expo-router';
+import { Redirect, router } from 'expo-router';
 import { useState } from 'react';
 
 import { BrandHeader } from '@/components/common/brand-header';
@@ -27,6 +27,7 @@ export default function EmailConfirmationScreen() {
     try {
       setLoading(true);
       await refreshAuthState();
+      router.replace('/');
     } catch {
       setMessage('Could not refresh verification status. Try again.');
     } finally {
@@ -53,6 +54,7 @@ export default function EmailConfirmationScreen() {
         title="Confirm your email"
       />
       <StatusCard
+        footer="If you do not see the verification email, check your spam or junk folder."
         loading={loading}
         message={message}
         title={`Confirm ${authUser?.email ?? 'your email'}`}

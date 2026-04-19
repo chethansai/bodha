@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { formatFirebaseError } from '@/helpers/firebase-error';
+
 interface AsyncState<T> {
   data: T;
   error: string | null;
@@ -22,8 +24,9 @@ export function useAsyncState<T>(
       setLoading(true);
       setError(null);
       setData(await factory());
-    } catch {
-      setError(fallbackError);
+    } catch (error) {
+      console.error(error);
+      setError(formatFirebaseError(error, fallbackError));
       setData(initialValue);
     } finally {
       setLoading(false);

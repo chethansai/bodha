@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "644232349145",
+    "project_id": "bodha-118f3",
+    "storage_bucket": "bodha-118f3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644232349145:android:ab3bda0e3ecbd1e76d05c8",
+        "android_client_info": {
+          "package_name": "com.cyberaegis.bodha"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuUyGmwJC80c5AbEn4T5MXHzsQuRe4Kpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

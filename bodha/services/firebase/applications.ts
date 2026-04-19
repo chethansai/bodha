@@ -3,13 +3,13 @@ import {
   doc,
   getDoc,
   getDocs,
-  orderBy,
   query,
   serverTimestamp,
   setDoc,
   where,
 } from 'firebase/firestore';
 
+import { toTimestampMillis } from '@/helpers/formatters';
 import { getFirebaseDb } from '@/services/firebase/app';
 import type {
   AdminJobApplicantsGroup,
@@ -61,35 +61,29 @@ export async function createJobApplication(input: CreateApplicationInput): Promi
 }
 
 export async function listApplicationsForUser(userId: string): Promise<JobApplicationDocument[]> {
-  const applicationsQuery = query(
-    collection(getFirebaseDb(), APPLICATIONS_COLLECTION),
-    where('userId', '==', userId),
-    orderBy('appliedAt', 'desc')
-  );
+  const applicationsQuery = query(collection(getFirebaseDb(), APPLICATIONS_COLLECTION), where('userId', '==', userId));
   const snapshots = await getDocs(applicationsQuery);
 
-  return snapshots.docs.map((item) => ({ id: item.id, ...(item.data() as Omit<JobApplicationDocument, 'id'>) }));
+  return snapshots.docs
+    .map((item) => ({ id: item.id, ...(item.data() as Omit<JobApplicationDocument, 'id'>) }))
+    .sort((left, right) => toTimestampMillis(right.appliedAt) - toTimestampMillis(left.appliedAt));
 }
 
 export async function listAllApplications(): Promise<JobApplicationDocument[]> {
-  const applicationsQuery = query(
-    collection(getFirebaseDb(), APPLICATIONS_COLLECTION),
-    orderBy('appliedAt', 'desc')
-  );
-  const snapshots = await getDocs(applicationsQuery);
+  const snapshots = await getDocs(collection(getFirebaseDb(), APPLICATIONS_COLLECTION));
 
-  return snapshots.docs.map((item) => ({ id: item.id, ...(item.data() as Omit<JobApplicationDocument, 'id'>) }));
+  return snapshots.docs
+    .map((item) => ({ id: item.id, ...(item.data() as Omit<JobApplicationDocument, 'id'>) }))
+    .sort((left, right) => toTimestampMillis(right.appliedAt) - toTimestampMillis(left.appliedAt));
 }
 
 export async function listApplicantsForJob(jobId: string): Promise<JobApplicationDocument[]> {
-  const applicationsQuery = query(
-    collection(getFirebaseDb(), APPLICATIONS_COLLECTION),
-    where('jobId', '==', jobId),
-    orderBy('appliedAt', 'desc')
-  );
+  const applicationsQuery = query(collection(getFirebaseDb(), APPLICATIONS_COLLECTION), where('jobId', '==', jobId));
   const snapshots = await getDocs(applicationsQuery);
 
-  return snapshots.docs.map((item) => ({ id: item.id, ...(item.data() as Omit<JobApplicationDocument, 'id'>) }));
+  return snapshots.docs
+    .map((item) => ({ id: item.id, ...(item.data() as Omit<JobApplicationDocument, 'id'>) }))
+    .sort((left, right) => toTimestampMillis(right.appliedAt) - toTimestampMillis(left.appliedAt));
 }
 
 export async function listApplicationsGroupedByJob(): Promise<AdminJobApplicantsGroup[]> {

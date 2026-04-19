@@ -28,7 +28,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     padding: 16,
     gap: 8,
-    backgroundColor: '#eef6ff',
+    backgroundColor: '#fffaf2',
+    borderWidth: 1,
+    borderColor: '#eadfcf',
   },
   header: {
     flexDirection: 'row',

@@ -32,5 +32,6 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     padding: 20,
     gap: 16,
+    backgroundColor: '#f4efe6',
   },
 });

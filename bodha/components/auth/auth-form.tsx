@@ -1,11 +1,13 @@
 import { StyleSheet, View } from 'react-native';
 
+import { BrandHeader } from '@/components/common/brand-header';
 import { PrimaryButton } from '@/components/common/primary-button';
 import { TextField } from '@/components/common/text-field';
 import { ThemedText } from '@/components/themed-text';
 
 interface AuthFormProps {
   title: string;
+  subtitle: string;
   submitLabel: string;
   email: string;
   password: string;
@@ -20,6 +22,7 @@ interface AuthFormProps {
 
 export function AuthForm({
   title,
+  subtitle,
   submitLabel,
   email,
   password,
@@ -33,7 +36,7 @@ export function AuthForm({
 }: AuthFormProps) {
   return (
     <View style={styles.container}>
-      <ThemedText type="title">{title}</ThemedText>
+      <BrandHeader subtitle={subtitle} title={title} />
       <TextField
         keyboardType="email-address"
         label="Email"
